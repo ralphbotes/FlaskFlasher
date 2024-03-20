@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
+from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from models.models import db, User, Card
 
 app = Flask(__name__)
@@ -19,7 +19,7 @@ def load_user(user_id):
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    return render_template('dashboard.html', user=current_user)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():

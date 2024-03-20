@@ -50,6 +50,8 @@
 </head>
 <body>
     <h1>Welcome to the Dashboard</h1>
+    <h5>User ID: {{ user.id }}</h5>
+    <h5>Username: {{ user.username }}</h5>
     <p>This is a protected area. Only logged-in users can access it.</p>
     <a href="{{ url_for('logout') }}">Logout</a>
 </body>
