@@ -43,26 +43,101 @@
             background-color: #1EAEDB;
             border-color: #1EAEDB;
         }
+
+        .deck-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .deck {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: auto;
+            padding: 20px;
+            margin: 10px;
+            box-sizing: border-box;
+        }
+
+        .deck-content {
+            margin-bottom: 15px;
+        }
+
+        .deck-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .edit-btn,
+        .delete-btn,
+        .add-cards-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .edit-btn {
+            background-color: #33C3F0;
+            color: #fff;
+        }
+
+        .delete-btn {
+            background-color: #FF3333;
+            color: #fff;
+        }
+
+        .add-cards-btn {
+            background-color: #66BB6A;
+            color: #fff;
+        }
+
+        .edit-btn:hover,
+        .delete-btn:hover,
+        .add-cards-btn:hover {
+            background-color: #1EAEDB;
+        }
+
     </style>
 </head>
 <body>
-    <h2>Welcome to the Dashboard</h2>
-    <h5>User ID: {{ user.id }}</h5>
-    <h5>Username: {{ user.username }}</h5>
+    <h2>Welcome to the Dashboard, {{ user.username }}</h2>
     <h3>Your Decks</h3>
-    {% if cards %}
-        <ul>
-            {% for card in cards %}
-                <li>
-                    <strong>{{ card.title }}</strong>
-                    <p>{{ card.description }}</p>
-                    <p>Created at: {{ card.created_at }}</p>
-                </li>
+    {% if decks %}
+        <div class="deck-container">
+            {% for deck in decks %}
+                <div class="deck">
+                    <div class="deck-content">
+                        <p>
+                            <strong>{{ deck.title }}</strong><br />
+                            {{ deck.description }}<br />
+                            Created at: {{ deck.created_at }}
+                        </p>
+                    </div>
+                    <div class="deck-buttons">
+                        <!-- Edit Button -->
+                        <form action="{{ url_for('edit_deck', deck_id=deck.deck_id) }}" method="get">
+                            <button class="edit-btn" type="submit">Edit</button>
+                        </form>
+                        <!-- Delete Button -->
+                        <form action="{{ url_for('delete_deck', deck_id=deck.deck_id) }}" method="post">
+                            <button class="delete-btn" type="submit">Delete</button>
+                        </form>
+                        <!-- Add Cards Button -->
+                        <form action="{{ url_for('add_cards_to_deck', deck_id=deck.deck_id) }}" method="get">
+                            <button class="add-cards-btn" type="submit">Add Cards</button>
+                        </form>
+                    </div>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     {% else %}
-        <p>You have no cards yet.</p>
+        <p>You have no decks yet.</p>
     {% endif %}
+    <a href="{{ url_for('new_deck') }}">Add a New Deck</a>
     <!-- <p>This is a protected area. Only logged-in users can access it.</p> -->
     <a href="{{ url_for('logout') }}">Logout</a>
 </body>

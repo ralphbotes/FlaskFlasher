@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Deck</title>
+    <style>
+        body {
+            padding: 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: #222;
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        p {
+            margin-bottom: 2rem;
+        }
+
+        form {
+            display: inline-block;
+        }
+
+        button[type="submit"] {
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #fff;
+            background-color: #FF3B30;
+            border: 1px solid #FF3B30;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #D62D20;
+            border-color: #D62D20;
+        }
+
+        a {
+            display: inline-block;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #fff;
+            background-color: #33C3F0;
+            border: 1px solid #33C3F0;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #1EAEDB;
+            border-color: #1EAEDB;
+        }
+    </style>
+</head>
+<body>
+    <h2>Delete Deck</h2>
+    <p>Are you sure you want to delete the deck "{{ deck.title }}"?</p>
+    <form action="{{ url_for('delete_deck', deck_id=deck.deck_id) }}" method="post">
+        <button type="submit">Delete</button>
+    </form>
+    <a href="{{ url_for('dashboard') }}">Cancel</a>
+</body>
+</html>

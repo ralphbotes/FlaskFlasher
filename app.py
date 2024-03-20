@@ -4,7 +4,7 @@ from flask_login import LoginManager, current_user, login_user, logout_user, log
 from models.models import db, User, Card, Deck
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'x5UXtdnNeKZN'
+app.config['SECRET_KEY'] = 'x5UXtdnNeKZN'   # Add your own unique secret key here
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flaskflash.db'
 db.init_app(app)
 login_manager = LoginManager(app)
@@ -20,6 +20,64 @@ def load_user(user_id):
 def dashboard():
     user_decks = Deck.query.filter_by(user_id=current_user.id).all()
     return render_template('dashboard.html', user=current_user, decks=user_decks)
+
+@app.route('/new_deck', methods=['GET', 'POST'])
+@login_required
+def new_deck():
+    if request.method == 'POST':
+        title = request.form['title']
+        description = request.form['description']
+        # Create the new deck
+        new_deck = Deck(title=title, description=description, user_id=current_user.id)
+        db.session.add(new_deck)
+        db.session.commit()
+        return redirect(url_for('dashboard'))
+    return render_template('new_deck.html')
+
+@app.route('/decks/<int:deck_id>/add_cards', methods=['GET', 'POST'])
+@login_required
+def add_cards_to_deck(deck_id):
+    if request.method == 'POST':
+        # Handle adding cards to the deck
+        # You can access the submitted form data using request.form
+        # For example, request.form['card_title'], request.form['card_description']
+        # Perform the necessary actions to add cards to the deck
+        flash('Cards added to the deck successfully!', 'success')
+        return redirect(url_for('dashboard'))
+    else:
+        # Display form to add cards to the deck
+        return render_template('add_cards.html', deck_id=deck_id)
+    
+@app.route('/decks/<int:deck_id>/delete', methods=['POST'])
+@login_required
+def delete_deck(deck_id):
+    deck_to_delete = Deck.query.get_or_404(deck_id)
+    if deck_to_delete.user_id != current_user.id:
+        flash("You don't have permission to delete this deck.", 'error')
+        return redirect(url_for('dashboard'))
+    
+    db.session.delete(deck_to_delete)
+    db.session.commit()
+    flash('Deck deleted successfully!', 'success')
+    return redirect(url_for('dashboard'))
+
+@app.route('/decks/<int:deck_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_deck(deck_id):
+    deck_to_edit = Deck.query.get_or_404(deck_id)
+    if deck_to_edit.user_id != current_user.id:
+        flash("You don't have permission to edit this deck.", 'error')
+        return redirect(url_for('dashboard'))
+
+    if request.method == 'POST':
+        deck_to_edit.title = request.form['title']
+        deck_to_edit.description = request.form['description']
+        db.session.commit()
+        flash('Deck edited successfully!', 'success')
+        return redirect(url_for('dashboard'))
+    else:
+        # Display form to edit the deck
+        return render_template('edit_deck.html', deck=deck_to_edit)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
