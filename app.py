@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
-from models.models import db, User, Card
+from models.models import db, User, Card, Deck
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'x5UXtdnNeKZN'
@@ -19,7 +19,8 @@ def load_user(user_id):
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html', user=current_user)
+    user_decks = Deck.query.filter_by(user_id=current_user.id).all()
+    return render_template('dashboard.html', user=current_user, decks=user_decks)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
