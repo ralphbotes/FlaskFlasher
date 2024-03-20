@@ -2,19 +2,14 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
+from models.models import db, User, Card
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'x5UXtdnNeKZN'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flaskflash.db'
-db = SQLAlchemy(app)
+db.init_app(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
-
-class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
 
 @login_manager.user_loader
 def load_user(user_id):
