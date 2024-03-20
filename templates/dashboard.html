@@ -70,9 +70,17 @@
             justify-content: space-between;
         }
 
+        .deck-button-view-cards {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
         .edit-btn,
         .delete-btn,
-        .add-cards-btn {
+        .add-cards-btn,
+        .view-cards-btn {
             padding: 10px 20px;
             border: none;
             border-radius: 4px;
@@ -95,10 +103,19 @@
             color: #fff;
         }
 
+        .view-cards-btn {
+            background-color: #b3ff00;
+            color: #000000;
+            font-weight: 600;
+            font-size: larger;
+        }
+
         .edit-btn:hover,
         .delete-btn:hover,
-        .add-cards-btn:hover {
+        .add-cards-btn:hover,
+        .view-cards-btn:hover {
             background-color: #1EAEDB;
+            color: #fff;
         }
 
     </style>
@@ -109,29 +126,31 @@
     {% if decks %}
         <div class="deck-container">
             {% for deck in decks %}
-                <div class="deck">
-                    <div class="deck-content">
-                        <p>
-                            <strong>{{ deck.title }}</strong><br />
-                            {{ deck.description }}<br />
-                            Created at: {{ deck.created_at }}
-                        </p>
-                    </div>
-                    <div class="deck-buttons">
-                        <!-- Edit Button -->
-                        <form action="{{ url_for('edit_deck', deck_id=deck.deck_id) }}" method="get">
-                            <button class="edit-btn" type="submit">Edit</button>
-                        </form>
-                        <!-- Delete Button -->
-                        <form action="{{ url_for('delete_deck', deck_id=deck.deck_id) }}" method="post">
-                            <button class="delete-btn" type="submit">Delete</button>
-                        </form>
-                        <!-- Add Cards Button -->
-                        <form action="{{ url_for('add_cards_to_deck', deck_id=deck.deck_id) }}" method="get">
-                            <button class="add-cards-btn" type="submit">Add Cards</button>
-                        </form>
-                    </div>
+            <div class="deck">
+                <div class="deck-content">
+                    <p>
+                        <strong>{{ deck.title }}</strong><br />
+                        {{ deck.description }}<br />
+                        Created at: {{ deck.created_at }}
+                    </p>
                 </div>
+                <div class="deck-buttons">                   
+                    <form action="{{ url_for('edit_deck', deck_id=deck.deck_id) }}" method="get">
+                        <button class="edit-btn" type="submit">Edit</button>
+                    </form>
+                    <form action="{{ url_for('delete_deck', deck_id=deck.deck_id) }}" method="post">
+                        <button class="delete-btn" type="submit">Delete</button>
+                    </form>
+                    <form action="{{ url_for('add_cards_to_deck', deck_id=deck.deck_id) }}" method="get">
+                        <button class="add-cards-btn" type="submit">Add Cards</button>
+                    </form>
+                </div>
+                <div class="deck-button-view-cards">
+                    <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get">
+                        <button class="view-cards-btn" type="submit">View Cards</button>
+                    </form> 
+                </div>
+            </div>
             {% endfor %}
         </div>
     {% else %}

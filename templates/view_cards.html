@@ -43,6 +43,13 @@
             min-height: 100px;
         }
 
+        .deck-button-view-cards {
+            display: flex;
+            justify-content: space-evenly;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
         button[type="submit"] {
             width: 100%;
             padding: 0.75rem;
@@ -84,21 +91,33 @@
     </style>
 </head>
 <body>
-    <h2>Add Cards to Deck</h2>
-    <form action="{{ url_for('add_cards_to_deck', deck_id=deck_id) }}" method="post">
-        <!-- Card Title Input -->
-        <label for="card_title">Card Title:</label>
-        <input type="text" id="card_title" name="card_title" required>
-        
-        <!-- Card Description Input -->
-        <label for="card_description">Card Description:</label>
-        <textarea id="card_description" name="card_description" required></textarea>
-        
-        <!-- Submit Button to Add Card -->
-        <button type="submit">Add Card</button>
-    </form>
-        
+    <h1>Cards</h1>
+    <div class="card-container">
+        <p>
+            {{ card.card_id }}<br />
+            <strong>{{ card.title }}</strong><br />
+            {{ card.description }}<br />
+            Created at: {{ card.created_at }}
+        </p>
+    </div>
+    <div class="deck-buttons">   
+        <div class="deck-button-view-cards">
+            <form action="{{ url_for('view_cards', deck_id=deck.deck_id, current_card_id=card.card_id) }}" method="get">
+                <input type="hidden" name="prev" value="True">
+                <button class="prev-btn" type="submit">Previous Card</button>
+            </form>
+            <form action="{{ url_for('view_cards', deck_id=deck.deck_id, current_card_id=card.card_id) }}" method="get">
+                <input type="hidden" name="next" value="True">
+                <button class="next-btn" type="submit">Next Card</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Button to Redirect to Dashboard -->
     <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+
+    <script>
+        // JavaScript code for pagination
+    </script>
 </body>
 </html>

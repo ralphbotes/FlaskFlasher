@@ -39,11 +39,21 @@ def new_deck():
 def add_cards_to_deck(deck_id):
     if request.method == 'POST':
         # Handle adding cards to the deck
-        # You can access the submitted form data using request.form
-        # For example, request.form['card_title'], request.form['card_description']
-        # Perform the necessary actions to add cards to the deck
-        flash('Cards added to the deck successfully!', 'success')
-        return redirect(url_for('dashboard'))
+        card_title = request.form['card_title']
+        card_description = request.form['card_description']
+        
+        # Create a new card object
+        new_card = Card(title=card_title, description=card_description, deck_id=deck_id, user_id=current_user.id)
+        
+        # Add the card to the database
+        db.session.add(new_card)
+        db.session.commit()
+        
+        flash('Card added to the deck successfully!', 'success')
+        
+        # Redirect back to the same page
+        return redirect(url_for('add_cards_to_deck', deck_id=deck_id))
+    
     else:
         # Display form to add cards to the deck
         return render_template('add_cards.html', deck_id=deck_id)
@@ -78,6 +88,25 @@ def edit_deck(deck_id):
     else:
         # Display form to edit the deck
         return render_template('edit_deck.html', deck=deck_to_edit)
+    
+@app.route('/decks/<int:deck_id>/view_cards', methods=['GET'])
+@login_required
+def view_cards(deck_id, current_card_id=0):
+    # Retrieve the cards associated with the selected deck
+    deck = Deck.query.get_or_404(deck_id)
+    cards = deck.cards
+    current_card = cards[0]
+
+    # Check if 'next' and 'prev' parameters are present in the query string
+    next_card_requested = 'next' in request.args
+    prev_card_requested = 'prev' in request.args
+
+    if prev_card_requested:
+        current_card = cards[0]
+    if next_card_requested:
+        current_card = cards[1]
+
+    return render_template('view_cards.html', deck=deck, card=current_card)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
