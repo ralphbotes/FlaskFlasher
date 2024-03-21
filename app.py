@@ -66,8 +66,12 @@ def delete_deck(deck_id):
         flash("You don't have permission to delete this deck.", 'error')
         return redirect(url_for('dashboard'))
     
+    # Delete all cards associated with the deck
+    Card.query.filter_by(deck_id=deck_id).delete()
+    
     db.session.delete(deck_to_delete)
     db.session.commit()
+    
     flash('Deck deleted successfully!', 'success')
     return redirect(url_for('dashboard'))
 
