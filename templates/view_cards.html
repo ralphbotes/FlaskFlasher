@@ -161,12 +161,11 @@
                 </div>
             </div>
         </div>
-            <p>
-                <small><strong>Created:</strong> {{ card.created_at }}</small>
-            </p>
-        <div>
-            
-        </div>
+        
+        <p>
+            <small><strong>Created:</strong> {{ card.created_at }}</small>
+        </p>
+
         <div class="deck-buttons">   
             <div class="deck-button-view-cards">
                 <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get">
@@ -193,10 +192,20 @@
         <h1>No Cards Available</h1>
         <p>There are currently no cards available for this deck.</p>
     {% endif %}
-    
-    <form action="{{ url_for('add_cards_to_deck', deck_id=deck.deck_id) }}" method="get">
-        <button class="add-cards-btn" type="submit">Add Cards</button>
-    </form>
+
+    <div class="deck-buttons">   
+        <div class="deck-button-view-cards">
+            <form action="{{ url_for('add_cards_to_deck', deck_id=deck.deck_id) }}" method="get">
+                <button class="add-cards-btn" type="submit">Add Cards</button>
+            </form>
+            <form action="{{ url_for('edit_card', card_id=card.id) }}" method="post">
+                <button class="edit-cards-btn" type="submit">Edit</button>
+            </form>
+            <form action="{{ url_for('delete_card', card_id=card.id) }}" method="post">
+                <button class="delete-cards-btn" type="submit">Delete</button>
+            </form>
+        </div>
+    </div>
 
     <!-- Button to Redirect to Dashboard -->
     <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
