@@ -91,38 +91,44 @@
     </style>
 </head>
 <body>
-    <h1>Cards</h1>
-    <div class="card-container">
-        <p>
-            {{ card.id }}<br />
-            <strong>{{ card.title }}</strong><br />
-            {{ card.description }}<br />
-            Created at: {{ card.created_at }}
-        </p>
-    </div>
-    <div class="deck-buttons">   
-        <div class="deck-button-view-cards">
-            <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get">
-                <input type="hidden" name="action" value="first">
-                <button class="first-btn" type="submit">First Card</button>
-            </form>
-            <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get">
-                <input type="hidden" name="action" value="prev">
-                <input type="hidden" name="current_card_id" value="{{ card.id }}">
-                <button class="prev-btn" type="submit">Previous Card</button>
-            </form>
-            <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get">
-                <input type="hidden" name="action" value="next">
-                <input type="hidden" name="current_card_id" value="{{ card.id }}">
-                <button class="next-btn" type="submit">Next Card</button>
-            </form>
-            <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get">
-                <input type="hidden" name="action" value="last">
-                <button class="last-btn" type="submit">Last Card</button>
-            </form>
+    {% if card %}
+        <h1>Cards</h1>
+        <div class="card-container">
+            <p>
+                <strong>{{ card.title }}</strong><br />
+                {{ card.description }}<br />
+                Created at: {{ card.created_at }}
+            </p>
         </div>
-    </div>
-    
+        <div class="deck-buttons">   
+            <div class="deck-button-view-cards">
+                <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get">
+                    <input type="hidden" name="action" value="first">
+                    <button class="first-btn" type="submit">First Card</button>
+                </form>
+                <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get">
+                    <input type="hidden" name="action" value="prev">
+                    <input type="hidden" name="current_card_id" value="{{ card.id }}">
+                    <button class="prev-btn" type="submit">Previous Card</button>
+                </form>
+                <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get">
+                    <input type="hidden" name="action" value="next">
+                    <input type="hidden" name="current_card_id" value="{{ card.id }}">
+                    <button class="next-btn" type="submit">Next Card</button>
+                </form>
+                <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get">
+                    <input type="hidden" name="action" value="last">
+                    <button class="last-btn" type="submit">Last Card</button>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <h1>No Cards Available</h1>
+        <p>There are currently no cards available for this deck.</p>
+        <form action="{{ url_for('add_cards_to_deck', deck_id=deck.deck_id) }}" method="get">
+            <button class="add-cards-btn" type="submit">Add Cards</button>
+        </form>
+    {% endif %}
 
     <!-- Button to Redirect to Dashboard -->
     <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
