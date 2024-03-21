@@ -91,20 +91,36 @@ def edit_deck(deck_id):
     
 @app.route('/decks/<int:deck_id>/view_cards', methods=['GET'])
 @login_required
-def view_cards(deck_id, current_card_id=0):
+def view_cards(deck_id: int):
     # Retrieve the cards associated with the selected deck
     deck = Deck.query.get_or_404(deck_id)
     cards = deck.cards
+
+    current_card_id = -1
+    if 'current_card_id' in request.args:
+        current_card_id_value = request.args.get('current_card_id')
+        if current_card_id_value and current_card_id_value != "":
+            current_card_id = int(current_card_id_value)
+
     current_card = cards[0]
 
-    # Check if 'next' and 'prev' parameters are present in the query string
-    next_card_requested = 'next' in request.args
-    prev_card_requested = 'prev' in request.args
-
-    if prev_card_requested:
-        current_card = cards[0]
-    if next_card_requested:
-        current_card = cards[1]
+    if 'action' in request.args:
+        action = request.args.get('action')
+        if action == 'first':
+            pass  # First card already selected, continue
+        elif action == 'last':
+            current_card = cards[-1]
+        elif action == 'next':
+            for index, card in enumerate(cards):
+                if card.id == current_card_id:
+                    next_idx = index + 1
+                    if len(cards) <= next_idx:
+                        current_card = cards[index]
+                    else:
+                        current_card = cards[next_idx]
+                    break
+        elif action == 'prev':
+            current_card = cards[max(0, current_card_id - 1)]
 
     return render_template('view_cards.html', deck=deck, card=current_card)
 

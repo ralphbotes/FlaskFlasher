@@ -94,7 +94,7 @@
     <h1>Cards</h1>
     <div class="card-container">
         <p>
-            {{ card.card_id }}<br />
+            {{ card.id }}<br />
             <strong>{{ card.title }}</strong><br />
             {{ card.description }}<br />
             Created at: {{ card.created_at }}
@@ -102,22 +102,29 @@
     </div>
     <div class="deck-buttons">   
         <div class="deck-button-view-cards">
-            <form action="{{ url_for('view_cards', deck_id=deck.deck_id, current_card_id=card.card_id) }}" method="get">
-                <input type="hidden" name="prev" value="True">
+            <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get">
+                <input type="hidden" name="action" value="first">
+                <button class="first-btn" type="submit">First Card</button>
+            </form>
+            <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get">
+                <input type="hidden" name="action" value="prev">
+                <input type="hidden" name="current_card_id" value="{{ card.id }}">
                 <button class="prev-btn" type="submit">Previous Card</button>
             </form>
-            <form action="{{ url_for('view_cards', deck_id=deck.deck_id, current_card_id=card.card_id) }}" method="get">
-                <input type="hidden" name="next" value="True">
+            <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get">
+                <input type="hidden" name="action" value="next">
+                <input type="hidden" name="current_card_id" value="{{ card.id }}">
                 <button class="next-btn" type="submit">Next Card</button>
+            </form>
+            <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get">
+                <input type="hidden" name="action" value="last">
+                <button class="last-btn" type="submit">Last Card</button>
             </form>
         </div>
     </div>
+    
 
     <!-- Button to Redirect to Dashboard -->
     <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
-
-    <script>
-        // JavaScript code for pagination
-    </script>
 </body>
 </html>
