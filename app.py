@@ -71,9 +71,41 @@ def delete_deck(deck_id):
     
     db.session.delete(deck_to_delete)
     db.session.commit()
-    
+
     flash('Deck deleted successfully!', 'success')
     return redirect(url_for('dashboard'))
+
+@app.route('/cards/<int:card_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_card(card_id):
+    card_to_edit = Card.query.get_or_404(card_id)
+    if card_to_edit.user_id != current_user.id:
+        flash("You don't have permission to edit this card.", 'error')
+        return redirect(url_for('view_cards', deck_id=card_to_edit.deck_id))
+    
+    if request.method == 'POST':
+        if 'title' in request.form and 'description' in request.form:
+            card_to_edit.title = request.form['title']
+            card_to_edit.description = request.form['description']
+        
+            db.session.commit()
+            flash('Card updated successfully!', 'success')
+            return redirect(url_for('view_cards', deck_id=card_to_edit.deck_id))
+    
+    return render_template('edit_card.html', card=card_to_edit)
+
+@app.route('/cards/<int:card_id>/delete', methods=['POST'])
+@login_required
+def delete_card(card_id):
+    card = Card.query.get_or_404(card_id)
+    if card.user_id != current_user.id:
+        flash("You don't have permission to delete this card.", 'error')
+        return redirect(url_for('view_cards', deck_id=card.deck_id))
+    
+    db.session.delete(card)
+    db.session.commit()
+    flash('Card deleted successfully!', 'success')
+    return redirect(url_for('view_cards', deck_id=card.deck_id))
 
 @app.route('/decks/<int:deck_id>/edit', methods=['GET', 'POST'])
 @login_required
