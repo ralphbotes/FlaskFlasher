@@ -1,93 +1,79 @@
+<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" rel="stylesheet" /> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Basic Page Needs –––––––––– -->
+    <meta charset="utf-8">
     <title>Login</title>
+    <meta name="description" content="Simple login with flask_login">
+    <meta name="author" content="Powered By Ralph">
+
+    <!-- Mobile Specific Metas ––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon ––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="/src/favicon.png">
+
+    <!-- CSS ----––––––––––––––––––– -->
+    <link rel="stylesheet" href="/src/normalize.css">
+    <link rel="stylesheet" href="/src/skeleton.css">
     <style>
-        body {
-            padding: 2rem;
-            max-width: 600px;
-            margin: 0 auto;
-            font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            color: #222;
+        div.container {
+            padding: 20px;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         }
 
-        h2 {
-            margin-top: 0;
-            margin-bottom: 2rem;
-            font-weight: 300;
+        button.button-primary {
+            color: #FFF;
+            background-color: #47ff51;
+            border-color: #47ff51;
         }
 
-        form {
-            margin-bottom: 2rem;
-        }
-
-        label {
-            display: block;
-            margin-bottom: .5rem;
-            font-weight: 600;
-        }
-
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-            border: 1px solid #D1D1D1;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        button[type="submit"] {
-            width: 100%;
-            padding: 0.75rem;
-            font-size: 1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: #fff;
-            background-color: #33C3F0;
-            border: 1px solid #33C3F0;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button[type="submit"]:hover {
-            background-color: #1EAEDB;
-            border-color: #1EAEDB;
-        }
-
-        p {
-            margin-top: 0;
-        }
-
-        a {
-            color: #1EAEDB;
-            text-decoration: none;
-        }
-
-        a:hover {
-            color: #0FA0CE;
+        button.button-primary:hover,
+        button.button-primary:focus {
+            color: #FFF;
+            background-color: #1cff28;
+            border-color: #1cff28;
         }
     </style>
 </head>
 <body>
-    <h2>Login</h2>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-                <div>{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    <form action="{{ url_for('login') }}" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <button type="submit">Login</button>
-    </form>
-    <p>Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a></p>
+    <div class="container">
+        <form action="{{ url_for('login') }}" method="post">
+            <div class="row">
+                <div class="six columns">
+                  <h2>Login</h2>
+                  <hr class="hr" />
+                </div>
+                <div class="six columns">
+                    <div class="row">
+                        <div class="six columns">
+                          <label for="username">Username:</label>
+                          <input type="text" id="username" name="username" required>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="six columns">
+                          <label for="password">Password:</label>
+                          <input type="password" id="password" name="password" required>
+                          <button type="submit" class="button-primary">Login</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="six columns">
+                    <p>Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a></p>
+                </div>
+            </div>
+          </form>
+    </div>
+    <!-- 
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div>{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    -->
 </body>
 </html>
