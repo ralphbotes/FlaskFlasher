@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from models.models import db, User, Card, Deck
+from sqlalchemy import or_
 
 app = Flask(__name__, static_folder='src')
 app.config['SECRET_KEY'] = 'x5UXtdnNeKZN'   # Add your own unique secret key here
@@ -190,9 +191,13 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        user = User.query.filter_by(username=username).first()
-        if user and check_password_hash(user.password, password):
-            login_user(user)
+        user_by_email = User.query.filter(User.email == username).first()
+        user_by_username = User.query.filter(User.username == username).first()
+        if user_by_email and check_password_hash(user_by_email.password, password):
+            login_user(user_by_email)
+            return redirect(url_for('dashboard'))
+        elif user_by_username and check_password_hash(user_by_username.password, password):
+            login_user(user_by_username)
             return redirect(url_for('dashboard'))
         else:
             flash('Login unsuccessful. Please check your username and password.', 'danger')
