@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from models.models import db, User, Card, Deck
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='src')
 app.config['SECRET_KEY'] = 'x5UXtdnNeKZN'   # Add your own unique secret key here
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flaskflash.db'
 db.init_app(app)
