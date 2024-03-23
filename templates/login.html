@@ -20,20 +20,30 @@
     <style>
         div.container {
             padding: 20px;
+            margin-top: 20px;
+            background-color: #EADFB4;
             box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         }
 
+        h2, label {
+            color: #51829B;
+        }
+
+        hr {
+            border-color: #9BB0C1;
+        }
+
         button.button-primary {
-            color: #FFF;
-            background-color: #47ff51;
-            border-color: #47ff51;
+            color: #000000;
+            background-color: #9BB0C1;
+            border-color: #9BB0C1;
         }
 
         button.button-primary:hover,
         button.button-primary:focus {
-            color: #FFF;
-            background-color: #1cff28;
-            border-color: #1cff28;
+            color: #000000;
+            background-color: #9fbcd4;
+            border-color: #9fbcd4;
         }
     </style>
 </head>
@@ -42,21 +52,22 @@
         <form action="{{ url_for('login') }}" method="post">
             <div class="row">
                 <div class="six columns">
-                  <h2>Login</h2>
+                  <h2 class="h2">Login</h2>
                   <hr class="hr" />
                 </div>
                 <div class="six columns">
                     <div class="row">
                         <div class="six columns">
-                          <label for="username">Username:</label>
-                          <input type="text" id="username" name="username" required>
+                            <label for="username">Username:</label>
+                            <input type="text" id="username" name="username" required>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="six columns">
-                          <label for="password">Password:</label>
-                          <input type="password" id="password" name="password" required>
-                          <button type="submit" class="button-primary">Login</button>
+                        </div>
+                        <div class="row">
+                            <div class="six columns">
+                            <label for="password">Password:</label>
+                            <input type="password" id="password" name="password" required>
+                            <button type="submit" class="button-primary">Login</button>
+                            </div>
                         </div>
                     </div>
                 </div>
