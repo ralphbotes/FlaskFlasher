@@ -1,4 +1,8 @@
-Basic `Flask CRUD` web app.
-Includes `skeleton css` and local SQLite DB
+Basic `Flask CRUD` card flashe web app.
 
-See `Video Presentation` for example
+Includes:
+• `skeleton css`
+• Local `SQAlchemy database`
+• `Flask-login` for basic authentication
+
+`Video Presentation` to be done when completed
