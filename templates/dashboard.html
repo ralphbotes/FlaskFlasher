@@ -27,18 +27,23 @@
 
         div.container.dashboard-top {
             background-color: #51829B;
+            text-align: center;
+        }
+
+        .dashboard-top-left {
+            text-align: center;
         }
 
         div.container.dashboard-body {
             text-align: center;
         }
 
-        div.container.deck-container {
-            background-color: #51829B;
+        div.dashboard-logout {
+            margin-top: 20px;
         }
 
-        .dashboard-top-left {
-            text-align: right;
+        div.container.deck-container {
+            background-color: #51829B;
         }
 
         h4, h5, h6, p, label {
@@ -69,6 +74,47 @@
             background-color: #9fbcd4;
             border-color: #9fbcd4;
         }
+
+        .fab-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .fab {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background-color: #51829B;
+            color: #fff;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 36px;
+            line-height: 60px;
+            text-decoration: none;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+        }
+
+        .fab:hover {
+            background-color: #9fbcd4;
+        }
+
+
+        @media (min-width: 500px) {
+            div.container.dashboard-top {
+                text-align: left;
+            }
+
+            .dashboard-top-left {
+                text-align: right;
+            }
+
+            div.deck-wrapper {
+                justify-content: center;
+                align-items: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -90,7 +136,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="twelve columns">
+                <div class="twelve columns deck-wrapper">
                     {% if decks %}
                         {% for deck in decks %}
                             <div class="six columns container deck-container">
@@ -143,16 +189,18 @@
                     {% endif %}
                 </div>
             </div>
+            <div class="twelve columns dashboard-logout">
+                <form action="{{ url_for('logout') }}" method="get">
+                    <button class="button-primary logout-btn" type="submit">
+                        Logout
+                    </button> 
+                </form>
+            </div>
         </div>
     </div>
 
-
-
-    
-    
-    
-    <a href="{{ url_for('new_deck') }}">Add a New Deck</a>
-    <!-- <p>This is a protected area. Only logged-in users can access it.</p> -->
-    <a href="{{ url_for('logout') }}">Logout</a>
+    <div class="fab-container">
+        <a href="{{ url_for('new_deck') }}" class="fab">+</a>
+    </div>
 </body>
 </html>
