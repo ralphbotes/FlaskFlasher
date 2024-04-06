@@ -64,6 +64,16 @@ def add_cards_to_deck(deck_id):
 def delete_deck(deck_id):
     deck_to_delete = Deck.query.get_or_404(deck_id)
     if deck_to_delete.user_id != current_user.id:
+        flash("You don't have permission to edit this deck.", 'error')
+        return redirect(url_for('dashboard'))
+
+    return render_template('delete_deck.html', deck=deck_to_delete)
+    
+@app.route('/decks/<int:deck_id>/delete_confirmed', methods=['POST'])
+@login_required
+def delete_deck_confirm(deck_id):
+    deck_to_delete = Deck.query.get_or_404(deck_id)
+    if deck_to_delete.user_id != current_user.id:
         flash("You don't have permission to delete this deck.", 'error')
         return redirect(url_for('dashboard'))
     

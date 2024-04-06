@@ -1,77 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete Deck</title>
+    <!-- Basic Page Needs –––––––––– -->
+    <meta charset="utf-8">
+    <title>Add Cards</title>
+    <meta name="description" content="Simple login with flask_login">
+    <meta name="author" content="Powered By Ralph">
+
+    <!-- Mobile Specific Metas ––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon ––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="/src/favicon.png">
+
+    <!-- CSS ----––––––––––––––––––– -->
+    <link rel="stylesheet" href="/src/normalize.css">
+    <link rel="stylesheet" href="/src/skeleton.css">
     <style>
-        body {
-            padding: 2rem;
-            max-width: 600px;
-            margin: 0 auto;
-            font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            color: #222;
+        div.container {
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #EADFB4;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         }
 
-        h2 {
-            margin-top: 0;
-            margin-bottom: 2rem;
-            font-weight: 300;
+        p, h2, label {
+            color: #51829B;
         }
 
-        p {
-            margin-bottom: 2rem;
+        hr {
+            border-color: #9BB0C1;
         }
 
-        form {
-            display: inline-block;
+        button.button-primary {
+            color: #000000;
+            background-color: #9BB0C1;
+            border-color: #9BB0C1;
         }
 
-        button[type="submit"] {
-            padding: 0.75rem 1rem;
-            font-size: 1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: #fff;
-            background-color: #FF3B30;
-            border: 1px solid #FF3B30;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+        button.button-primary:hover,
+        button.button-primary:focus {
+            color: #000000;
+            background-color: #9fbcd4;
+            border-color: #9fbcd4;
         }
 
-        button[type="submit"]:hover {
-            background-color: #D62D20;
-            border-color: #D62D20;
+        button.button-primary.delete {
+            color: #ffffff;
+            background-color: #be0000;
+            border-color: #be0000;
         }
 
-        a {
-            display: inline-block;
-            padding: 0.75rem 1rem;
-            font-size: 1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: #fff;
-            background-color: #33C3F0;
-            border: 1px solid #33C3F0;
-            border-radius: 4px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+        button.button-primary.delete:hover,
+        button.button-primary.delete:focus {
+            color: #ffffff;
+            background-color: #ff4545;
         }
 
-        a:hover {
-            background-color: #1EAEDB;
-            border-color: #1EAEDB;
+        button.button-secondary {
+            color: #000000;
+            background-color: #9BB0C1;
+            border-color: #9BB0C1;
+        }
+
+        button.button-secondary:hover,
+        button.button-secondary:focus {
+            color: #000000;
+            background-color: #9fbcd4;
+            border-color: #9fbcd4;
         }
     </style>
 </head>
 <body>
-    <h2>Delete Deck</h2>
-    <p>Are you sure you want to delete the deck "{{ deck.title }}"?</p>
-    <form action="{{ url_for('delete_deck', deck_id=deck.deck_id) }}" method="post">
-        <button type="submit">Delete</button>
-    </form>
-    <a href="{{ url_for('dashboard') }}">Cancel</a>
+    <div class="container">
+        <div class="six columns">
+          <h2 class="h2">Delete Deck</h2>
+          <hr class="hr" />
+          <p>Are you sure you want to delete the deck "{{ deck.title }}"?
+          <br />This action cannot be undone!</p>
+        </div>
+        <div class="six columns">
+            <div class="row">
+                <form action="{{ url_for('delete_deck_confirm', deck_id=deck.deck_id) }}" method="post">
+                    <div class="six columns">
+                        <div class="row">
+                            <div class="six columns">
+                                <!-- Submit Button to Edit Dech -->
+                                <button type="submit" class="button-primary delete">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form action="{{ url_for('dashboard') }}" method="get">
+                    <div class="six columns">
+                        <div class="row">
+                            <div class="six columns">
+                                <!-- Submit Button to Edit Dech -->
+                                <button type="submit" class="button-primary">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
