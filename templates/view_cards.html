@@ -1,46 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Cards to Deck</title>
+    <!-- Basic Page Needs –––––––––– -->
+    <meta charset="utf-8">
+    <title>Add Cards</title>
+    <meta name="description" content="Simple login with flask_login">
+    <meta name="author" content="Powered By Ralph">
+
+    <!-- Mobile Specific Metas ––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon ––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="/src/favicon.png">
+
+    <!-- CSS ----––––––––––––––––––– -->
+    <link rel="stylesheet" href="/src/normalize.css">
+    <link rel="stylesheet" href="/src/skeleton.css">
     <style>
-        body {
-            padding: 2rem;
-            max-width: 600px;
-            margin: 0 auto;
-            font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            color: #222;
+        div.container {
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #EADFB4;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         }
 
-        h2 {
-            margin-top: 0;
-            margin-bottom: 2rem;
-            font-weight: 300;
+        h1, h2, label {
+            color: #51829B;
         }
 
-        form {
-            margin-bottom: 2rem;
+        hr {
+            border-color: #9BB0C1;
         }
 
-        label {
-            display: block;
-            margin-bottom: .5rem;
-            font-weight: 600;
+        button.button-primary {
+            color: #000000;
+            background-color: #9BB0C1;
+            border-color: #9BB0C1;
         }
 
-        input[type="text"],
-        textarea {
-            width: 100%;
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-            border: 1px solid #D1D1D1;
-            border-radius: 4px;
-            box-sizing: border-box;
+        button.button-primary:hover,
+        button.button-primary:focus {
+            color: #000000;
+            background-color: #9fbcd4;
+            border-color: #9fbcd4;
         }
 
-        textarea {
-            min-height: 100px;
+        button.button-secondary {
+            color: #000000;
+            background-color: #9BB0C1;
+            border-color: #9BB0C1;
+        }
+
+        button.button-secondary:hover,
+        button.button-secondary:focus {
+            color: #000000;
+            background-color: #9fbcd4;
+            border-color: #9fbcd4;
         }
 
         .card-container {
@@ -95,120 +110,102 @@
             color: #ffffff00;
         }
 
-        .deck-buttons {
+        form.center-content {
             display: flex;
-            justify-content: space-evenly;
-            margin: 10px;
-        }
-
-        .deck-button-view-cards {
-            display: flex;
-            justify-content: space-evenly;
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-
-        button[type="submit"] {
-            width: 100%;
-            padding: 0.75rem;
-            font-size: 1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: #fff;
-            background-color: #33C3F0;
-            border: 1px solid #33C3F0;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button[type="submit"]:hover {
-            background-color: #1EAEDB;
-            border-color: #1EAEDB;
-        }
-
-        a {
-            display: inline-block;
-            padding: 0.75rem 1rem;
-            font-size: 1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: #fff;
-            background-color: #33C3F0;
-            border: 1px solid #33C3F0;
-            border-radius: 4px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        a:hover {
-            background-color: #1EAEDB;
-            border-color: #1EAEDB;
+            justify-content: center;
+            align-items: center;
         }
     </style>
 </head>
 <body>
-    {% if card %}
-        <h1>Cards for {{ deck.title }}</h1>
-        <div class="card-container">
-            <div class="card" id="card">
-                <div class="card-front" onclick="flipCard()">
-                    <strong>{{ card.title }}</strong>
+    <div class="container">
+        {% if card %}
+        <div class="row">
+            <div class="twelve columns">
+                <h1>Cards for {{ deck.title }}</h1>
+                <div class="card-container">
+                    <div class="card" id="card">
+                        <div class="card-front" onclick="flipCard()">
+                            <strong>{{ card.title }}</strong>
+                        </div>
+                        <div class="card-back" onclick="flipCard()">
+                            {{ card.description }}
+                        </div>
+                    </div>
                 </div>
-                <div class="card-back" onclick="flipCard()">
-                    {{ card.description }}
+            
+                <p>
+                    <small><strong>Created:</strong> {{ card.created_at }}</small>
+                </p>
+            </div>
+
+            <div class="deck-buttons">   
+                <div class="deck-button-view-cards">
+                    <div class="row">
+                        <div class="three columns">
+                            <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get" class="center-content">
+                                <input type="hidden" name="action" value="first">
+                                <button class="button-primary" type="submit">{{"<< "}}First Card</button>
+                            </form>
+                        </div>
+                        <div class="three columns">
+                            <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get" class="center-content">
+                                <input type="hidden" name="action" value="prev">
+                                <input type="hidden" name="current_card_id" value="{{ card.id }}">
+                                <button class="button-primary" type="submit">{{"< "}}Previous Card</button>
+                            </form>
+                        </div>
+                        <div class="three columns">
+                            <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get" class="center-content">
+                                <input type="hidden" name="action" value="next">
+                                <input type="hidden" name="current_card_id" value="{{ card.id }}">
+                                <button class="button-primary" type="submit">Next Card{{" >"}}</button>
+                            </form>
+                        </div>
+                        <div class="three columns">
+                            <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get" class="center-content">
+                                <input type="hidden" name="action" value="last">
+                                <button class="button-primary" type="submit">Last Card{{" >>"}}</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        <p>
-            <small><strong>Created:</strong> {{ card.created_at }}</small>
-        </p>
-
-        <div class="deck-buttons">   
-            <div class="deck-button-view-cards">
-                <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get">
-                    <input type="hidden" name="action" value="first">
-                    <button class="first-btn" type="submit">First Card</button>
-                </form>
-                <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get">
-                    <input type="hidden" name="action" value="prev">
-                    <input type="hidden" name="current_card_id" value="{{ card.id }}">
-                    <button class="prev-btn" type="submit">Previous Card</button>
-                </form>
-                <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get">
-                    <input type="hidden" name="action" value="next">
-                    <input type="hidden" name="current_card_id" value="{{ card.id }}">
-                    <button class="next-btn" type="submit">Next Card</button>
-                </form>
-                <form action="{{ url_for('view_cards', deck_id=deck.deck_id) }}" method="get">
-                    <input type="hidden" name="action" value="last">
-                    <button class="last-btn" type="submit">Last Card</button>
-                </form>
+            <div class="row">
+                <div class="twelve columns">
+                    <div class="row">
+                        <div class="four columns">
+                            <form action="{{ url_for('add_cards_to_deck', deck_id=deck.deck_id) }}" method="get" class="center-content">
+                                <button class="button-primary" type="submit">Add Cards</button>
+                            </form>
+                        </div>
+                        <div class="four columns">
+                            <form action="{{ url_for('edit_card', card_id=card.id) }}" method="post" class="center-content">
+                                <button class="button-primary" type="submit">Edit</button>
+                            </form>
+                        </div>
+                        <div class="four columns">
+                            <form action="{{ url_for('delete_card', card_id=card.id) }}" method="post" class="center-content">
+                                <button class="button-primary" type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        {% else %}
+            <h1>No Cards Available</h1>
+            <p>There are currently no cards available for this deck.</p>
+        {% endif %}
+    </div>
 
-        <div class="deck-buttons">   
-            <div class="deck-button-view-cards">
-                <form action="{{ url_for('add_cards_to_deck', deck_id=deck.deck_id) }}" method="get">
-                    <button class="add-cards-btn" type="submit">Add Cards</button>
-                </form>
-                <form action="{{ url_for('edit_card', card_id=card.id) }}" method="post">
-                    <button class="edit-cards-btn" type="submit">Edit</button>
-                </form>
-                <form action="{{ url_for('delete_card', card_id=card.id) }}" method="post">
-                    <button class="delete-cards-btn" type="submit">Delete</button>
-                </form>
-            </div>
-        </div>
-    {% else %}
-        <h1>No Cards Available</h1>
-        <p>There are currently no cards available for this deck.</p>
-    {% endif %}
-
-    <!-- Button to Redirect to Dashboard -->
-    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+    <div class="six columns">
+        <!-- Button to Redirect to Dashboard -->
+        <form action="{{ url_for('dashboard') }}" method="get">
+            <button class="button-primary dashboard-redirect-btn" type="submit">
+                Back to Dashboard
+            </button>
+        </form> 
+    </div>
 
     <script>
         function flipCard() {
